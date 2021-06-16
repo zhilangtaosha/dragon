@@ -777,14 +777,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       AlertStatus.normal, AlertSize.small,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0.4, .3),
   },
-  
-  EventName.slowingDownSpeed: {
-    ET.PERMANENT: Alert(
-    "Slowing down",
-    "", 
-    AlertStatus.normal, AlertSize.small,
-    Priority.MID, VisualAlert.none, AudibleAlert.chimeSlowingDownSpeed, 2., 2., 2.),
-  },
+#  
+#  EventName.slowingDownSpeed: {
+#    ET.PERMANENT: Alert(
+#    "Slowing down",
+#    "", 
+#    AlertStatus.normal, AlertSize.small,
+#    Priority.MID, VisualAlert.none, AudibleAlert.chimeSlowingDownSpeed, 2., 2., 2.),
+#  },
 
   # dp
   EventName.preLaneChangeLeftALC: {
