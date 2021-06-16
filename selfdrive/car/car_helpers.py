@@ -9,15 +9,15 @@ from selfdrive.swaglog import cloudlog
 import cereal.messaging as messaging
 from selfdrive.car import gen_empty_fingerprint
 
-from cereal import car
+from cereal import car, log
 EventName = car.CarEvent.EventName
 
-
 def get_startup_event(car_recognized, controller_available, fuzzy_fingerprint):
-  if True: #comma_remote and tested_branch:
-    event = EventName.startup
-  else:
-    event = EventName.startupMaster
+#  if True: #comma_remote and tested_branch:
+#    event = EventName.startup
+#  else:
+#    event = EventName.startupMaster
+  event = EventName.startup
 
   if not car_recognized:
     event = EventName.startupNoCar

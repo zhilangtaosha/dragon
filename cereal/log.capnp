@@ -491,6 +491,10 @@ struct ControlsState @0x97ff69c53601abf1 {
   longitudinalPlanMonoTime @28 :UInt64;
   lateralPlanMonoTime @50 :UInt64;
 
+  # Wheel rotation
+  vEgo @0 :Float32;
+  steerOverride @20 :Bool;
+
   state @31 :OpenpilotState;
   enabled @19 :Bool;
   active @36 :Bool;
@@ -519,6 +523,16 @@ struct ControlsState @0x97ff69c53601abf1 {
 
   cumLagMs @15 :Float32;
   canErrorCounter @57 :UInt32;
+
+  decelForModel @59 :Bool;
+  # Road Speed Limiter
+  roadLimitSpeed @60 :Int32;
+  roadLimitSpeedLeftDist @61 :Int32;
+  
+  # Ui display
+  steerRatio @62 :Float32;
+  steerRateCost @63 :Float32;
+  steerActuatorDelay @64 :Float32;
 
   lateralControlState :union {
     indiState @52 :LateralINDIState;
@@ -597,8 +611,7 @@ struct ControlsState @0x97ff69c53601abf1 {
   }
 
   # deprecated
-  vEgoDEPRECATED @0 :Float32;
-  vEgoRawDEPRECATED @32 :Float32;
+  vEgoRaw @32 :Float32;
   aEgoDEPRECATED @1 :Float32;
   canMonoTimeDEPRECATED @16 :UInt64;
   radarStateMonoTimeDEPRECATED @17 :UInt64;
@@ -623,7 +636,6 @@ struct ControlsState @0x97ff69c53601abf1 {
   vCurvatureDEPRECATED @46 :Float32;
   mapValidDEPRECATED @49 :Bool;
   jerkFactorDEPRECATED @12 :Float32;
-  steerOverrideDEPRECATED @20 :Bool;
 }
 
 struct ModelDataV2 {
@@ -794,6 +806,11 @@ struct LateralPlan @0xe1e9318e2ae8b51e {
 
   # dp
   dpALCAllowed @26 :Bool;
+
+  # Lateral Ui display
+  steerRatio @27 :Float32;
+  steerRateCost @28 :Float32;
+  steerActuatorDelay @29 :Float32;
 
   enum Desire {
     none @0;

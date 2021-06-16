@@ -69,8 +69,8 @@ class Controls:
       self.can_sock = messaging.sub_sock('can', timeout=can_timeout)
 
     # wait for one pandaState and one CAN packet
-    self.hw_type = messaging.recv_one(self.sm.sock['pandaState']).pandaState.pandaType
-    has_relay = self.hw_type in [PandaType.blackPanda, PandaType.uno, PandaType.dos]
+    hw_type = messaging.recv_one(self.sm.sock['pandaState']).pandaState.pandaType
+    has_relay = hw_type in [PandaType.blackPanda, PandaType.uno, PandaType.dos]
     print("Waiting for CAN messages...")
     get_one_can(self.can_sock)
 
@@ -233,11 +233,11 @@ class Controls:
 
     if len(self.sm['radarState'].radarErrors):
       self.events.add(EventName.radarFault)
-    elif not self.dp_jetson and not self.sm.all_alive_and_valid():
-      self.events.add(EventName.commIssue)
-      if not self.logged_comm_issue:
-        cloudlog.error(f"commIssue - valid: {self.sm.valid} - alive: {self.sm.alive}")
-        self.logged_comm_issue = True
+#    elif not self.dp_jetson and not self.sm.all_alive_and_valid():
+#      self.events.add(EventName.commIssue)
+#      if not self.logged_comm_issue:
+#        cloudlog.error(f"commIssue - valid: {self.sm.valid} - alive: {self.sm.alive}")
+#        self.logged_comm_issue = True
     else:
       self.logged_comm_issue = False
 

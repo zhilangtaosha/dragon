@@ -25,6 +25,7 @@ class CarInterfaceBase():
   def __init__(self, CP, CarController, CarState):
     self.CP = CP
     self.VM = VehicleModel(CP)
+    self.disengage_on_gas = False
 
     self.frame = 0
     self.low_speed_alert = False
@@ -36,6 +37,7 @@ class CarInterfaceBase():
       self.cp = self.CS.get_can_parser(CP)
       self.cp_cam = self.CS.get_cam_can_parser(CP)
       self.cp_body = self.CS.get_body_can_parser(CP)
+      self.cp_chassis = self.CS.get_chassis_can_parser(CP) #this line for brakeLights
 
     self.CC = None
     if CarController is not None:
@@ -64,8 +66,8 @@ class CarInterfaceBase():
 
     # standard ALC params
     ret.steerControlType = car.CarParams.SteerControlType.torque
-    ret.steerMaxBP = [0.]
-    ret.steerMaxV = [1.]
+    ret.steerMaxBP = [10., 25.]
+    ret.steerMaxV = [1., 1.2]
     ret.minSteerSpeed = 0.
 
     # stock ACC by default
@@ -113,7 +115,7 @@ class CarInterfaceBase():
       events.add(EventName.wrongCarMode)
     if cs_out.espDisabled:
       events.add(EventName.espDisabled)
-    if cs_out.gasPressed and not self.dragonconf.dpAllowGas and not self.dragonconf.dpAtl:
+    if cs_out.gasPressed and not self.dragonconf.dpAllowGas and not self.dragonconf.dpAtl and self.disengage_on_gas:
       events.add(EventName.gasPressed)
     if cs_out.stockFcw:
       events.add(EventName.stockFcw)
@@ -143,7 +145,7 @@ class CarInterfaceBase():
       if cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill):
         events.add(EventName.pedalPressed)
     else:
-      if (cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
+      if (self.disengage_on_gas and cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
               (cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill)):
         events.add(EventName.pedalPressed)
 
@@ -215,4 +217,9 @@ class CarStateBase:
 
   @staticmethod
   def get_body_can_parser(CP):
+    return None
+
+#bellows are for brakeLights
+  @staticmethod
+  def get_chassis_can_parser(CP):
     return None

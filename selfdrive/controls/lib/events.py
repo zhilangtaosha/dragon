@@ -241,7 +241,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       _("Be ready to take over at any time"),
       _("Always keep hands on wheel and eyes on road"),
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 15.),
+      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 3.),
   },
 
   EventName.startupMaster: {
@@ -249,7 +249,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       _("WARNING: This branch is not tested"),
       _("Always keep hands on wheel and eyes on road"),
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 15.),
+      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 3.),
   },
 
   EventName.startupNoControl: {
@@ -257,7 +257,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       _("Dashcam mode"),
       _("Always keep hands on wheel and eyes on road"),
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 15.),
+      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 3.),
   },
 
   EventName.startupNoCar: {
@@ -265,7 +265,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       _("Dashcam mode for unsupported car"),
       _("Always keep hands on wheel and eyes on road"),
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 15.),
+      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 3.),
   },
 
   EventName.startupFuzzyFingerprint: {
@@ -768,6 +768,22 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       AlertStatus.normal, AlertSize.small,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., .2),
     ET.NO_ENTRY: NoEntryAlert(_("Cruise Fault: Restart the Car")),
+  },
+
+  EventName.autoHoldActivated: {
+    ET.PERMANENT: Alert(
+      "AutoHold Activated",
+      "You can rest your foot now.",
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0.4, .3),
+  },
+  
+  EventName.slowingDownSpeed: {
+    ET.PERMANENT: Alert(
+    "Slowing down",
+    "", 
+    AlertStatus.normal, AlertSize.small,
+    Priority.MID, VisualAlert.none, AudibleAlert.chimeSlowingDownSpeed, 2., 2., 2.),
   },
 
   # dp
