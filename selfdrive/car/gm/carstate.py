@@ -15,14 +15,14 @@ class CarState(CarStateBase):
     self.shifter_values = can_define.dv["ECMPRDNL"]["PRNDL"]
 
 #3Bar Distance
-    self.prev_distance_button = 0
-    self.prev_lka_button = 0
-    self.lka_button = 0
-    self.distance_button = 0
-    self.follow_level = 2
-    self.lkMode = True
+#    self.prev_distance_button = 0
+#    self.prev_lka_button = 0
+#    self.lka_button = 0
+#    self.distance_button = 0
+#    self.follow_level = 2
+#    self.lkMode = True
 #Autohold
-    self.autoHold = False
+    self.autoHold = True
     self.autoHoldActive = False
     self.autoHoldActivated = False
     self.regenPaddlePressed = 0
@@ -36,10 +36,10 @@ class CarState(CarStateBase):
     self.prev_cruise_buttons = self.cruise_buttons
     self.cruise_buttons = pt_cp.vl["ASCMSteeringButton"]['ACCButtons']
 # 4 lines for 3Bar Distance	
-    self.prev_lka_button = self.lka_button
-    self.lka_button = pt_cp.vl["ASCMSteeringButton"]['LKAButton']
-    self.prev_distance_button = self.distance_button
-    self.distance_button = pt_cp.vl["ASCMSteeringButton"]['DistanceButton']
+#    self.prev_lka_button = self.lka_button
+#    self.lka_button = pt_cp.vl["ASCMSteeringButton"]['LKAButton']
+#    self.prev_distance_button = self.distance_button
+#    self.distance_button = pt_cp.vl["ASCMSteeringButton"]['DistanceButton']
 
 # 5 lines to match OP's speed to Cluster's
 #    ret.wheelSpeeds.fl = pt_cp.vl["EBCMWheelSpdFront"]['FLWheelSpd'] * CV.KPH_TO_MS
@@ -95,21 +95,23 @@ class CarState(CarStateBase):
 
     ret.cruiseState.enabled = self.pcm_acc_status != AccState.OFF
     ret.cruiseState.standstill = False
-    ret.cruiseState.standstill = self.pcm_acc_status == AccState.STANDSTILL
 
-    self.engineRPM = pt_cp.vl["ECMEngineStatus"]['EngineRPM']
+#    self.engineRPM = pt_cp.vl["ECMEngineStatus"]['EngineRPM']
 
 # bellow line for Brake Light	
     ret.brakeLights = ch_cp.vl["EBCMFrictionBrakeStatus"]['FrictionBrakePressure'] != 0 or ret.brakePressed
 
-# belows are for GM's Autohold
-    if kegman_kans.conf['AutoHold'] == "1":
-      self.autoHold = True
-    else:
-      self.autoHold = False
-
+# belows are for GM's Autohold    if kegman_kans.conf['AutoHold'] == "1":
+#
+#      self.autoHold = True
+#    else:
+#      self.autoHold = False
+#
     ret.autoHoldActivated = self.autoHoldActivated
     return ret
+
+#  def get_follow_level(self):
+#    return self.follow_level  
 
   @staticmethod
   def get_can_parser(CP):
@@ -140,10 +142,10 @@ class CarState(CarStateBase):
       ("TractionControlOn", "ESPStatus", 0),
       ("EPBClosed", "EPBStatus", 0),
       ("CruiseMainOn", "ECMEngineStatus", 0),
-      ("LKAButton", "ASCMSteeringButton", 0),
-      ("DistanceButton", "ASCMSteeringButton", 0),
-      ("LKATorqueDelivered", "PSCMStatus", 0),
-      ("EngineRPM", "ECMEngineStatus", 0),
+#      ("LKAButton", "ASCMSteeringButton", 0),
+#      ("DistanceButton", "ASCMSteeringButton", 0),
+#      ("LKATorqueDelivered", "PSCMStatus", 0),
+#      ("EngineRPM", "ECMEngineStatus", 0),
       ("VehicleSpeed", "ECMVehicleSpeed", 0),
     ]
 

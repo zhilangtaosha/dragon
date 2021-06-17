@@ -38,7 +38,7 @@ class CarController():
 
     # STEER
     if (frame % P.STEER_STEP) == 0:
-      lkas_enabled = enabled and not CS.out.steerWarning and CS.lkMode and CS.out.vEgo > P.MIN_STEER_SPEED
+      lkas_enabled = enabled and not CS.out.steerWarning and CS.out.vEgo > P.MIN_STEER_SPEED
       if lkas_enabled:
         new_steer = int(round(actuators.steer * P.STEER_MAX))
         apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, P)
@@ -106,13 +106,11 @@ class CarController():
 
         can_sends.append(gmcan.create_gas_regen_command(self.packer_pt, CanBus.POWERTRAIN, apply_gas, idx, acc_enabled, at_full_stop))
 
-    follow_level = CS.get_follow_level()
-
     # Send dashboard UI commands (ACC status), 25hz
     if (frame % 4) == 0:
       send_fcw = hud_alert == VisualAlert.fcw
       can_sends.append(gmcan.create_acc_dashboard_command(self.packer_pt, CanBus.POWERTRAIN, enabled, 
-                                                         hud_v_cruise * CV.MS_TO_KPH, hud_show_car, send_fcw, follow_level))
+                                                         hud_v_cruise * CV.MS_TO_KPH, hud_show_car, send_fcw))
 
     # Radar needs to know current speed and yaw rate (50hz),
     # and that ADAS is alive (10hz)
