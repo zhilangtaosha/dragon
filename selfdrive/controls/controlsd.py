@@ -69,8 +69,8 @@ class Controls:
       self.can_sock = messaging.sub_sock('can', timeout=can_timeout)
 
     # wait for one pandaState and one CAN packet
-    hw_type = messaging.recv_one(self.sm.sock['pandaState']).pandaState.pandaType
-    has_relay = hw_type in [PandaType.blackPanda, PandaType.uno, PandaType.dos]
+    self.hw_type = messaging.recv_one(self.sm.sock['pandaState']).pandaState.pandaType
+    has_relay = self.hw_type in [PandaType.blackPanda, PandaType.uno, PandaType.dos]
     print("Waiting for CAN messages...")
     get_one_can(self.can_sock)
 
@@ -443,8 +443,9 @@ class Controls:
         left_deviation = actuators.steer > 0 and lat_plan.dPathPoints[0] < -0.1
         right_deviation = actuators.steer < 0 and lat_plan.dPathPoints[0] > 0.1
 
-        if left_deviation or right_deviation:
-          self.events.add(EventName.steerSaturated)
+#  Bellow 2Lines' notations are for disable Alerts
+#        if left_deviation or right_deviation:
+#          self.events.add(EventName.steerSaturated)
 
     return actuators, v_acc_sol, a_acc_sol, lac_log
 

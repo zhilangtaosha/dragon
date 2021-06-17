@@ -25,7 +25,6 @@ class CarInterfaceBase():
   def __init__(self, CP, CarController, CarState):
     self.CP = CP
     self.VM = VehicleModel(CP)
-    self.disengage_on_gas = False
 
     self.frame = 0
     self.low_speed_alert = False
@@ -54,7 +53,7 @@ class CarInterfaceBase():
     raise NotImplementedError
 
   @staticmethod
-  def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=None, has_relay=False):
+  def get_params(candidate, fingerprint=gen_empty_fingerprint(), has_relay=False, car_fw=None):
     raise NotImplementedError
 
   # returns a set of default params to avoid repetition in car specific params
@@ -115,7 +114,7 @@ class CarInterfaceBase():
       events.add(EventName.wrongCarMode)
     if cs_out.espDisabled:
       events.add(EventName.espDisabled)
-    if cs_out.gasPressed and not self.dragonconf.dpAllowGas and not self.dragonconf.dpAtl and self.disengage_on_gas:
+    if cs_out.gasPressed and not self.dragonconf.dpAllowGas and not self.dragonconf.dpAtl:
       events.add(EventName.gasPressed)
     if cs_out.stockFcw:
       events.add(EventName.stockFcw)
@@ -145,7 +144,7 @@ class CarInterfaceBase():
       if cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill):
         events.add(EventName.pedalPressed)
     else:
-      if (self.disengage_on_gas and cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
+      if (cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
               (cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill)):
         events.add(EventName.pedalPressed)
 
